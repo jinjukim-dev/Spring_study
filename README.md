@@ -137,8 +137,36 @@ boardMapper.xml
     
 </mapper>
 ```
-
-
-
-
-
+--------------------------
+boardList.jsp
+```
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
+<%@ page session="true"%>
+<table>
+            <tr>
+                <th class="no">번호</th>
+                <th class="title">제목</th>
+                <th class="writer">이름</th>
+                <th class="regdate">등록일</th>
+                <th class="viewcnt">조회수</th>
+            </tr>
+            <c:forEach var="boardDto" items="${list}">
+                <tr>
+                    <td class="no">${boardDto.bno}</td>
+                    <td class="title"><a href="<c:url value="/board/read${ph.sc.queryString}&bno=${boardDto.bno}"/>"><c:out value="${boardDto.title}"/></a></td>
+                    <td class="writer">${boardDto.writer}</td>
+                    <c:choose>
+                        <c:when test="${boardDto.reg_date.time >= startOfToday}">
+                            <td class="regdate"><fmt:formatDate value="${boardDto.reg_date}" pattern="HH:mm" type="time"/></td>
+                        </c:when>
+                        <c:otherwise>
+                            <td class="regdate"><fmt:formatDate value="${boardDto.reg_date}" pattern="yyyy-MM-dd" type="date"/></td>
+                        </c:otherwise>
+                    </c:choose>
+                    <td class="viewcnt">${boardDto.view_cnt}</td>
+                </tr>
+            </c:forEach>
+        </table>
+```
