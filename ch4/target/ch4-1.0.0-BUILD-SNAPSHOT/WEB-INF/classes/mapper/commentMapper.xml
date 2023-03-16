@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.ch4.dao.CommentMapper">
+
+    <!-- delteAll -->
+    <delete id="deleteAll" parameterType="int">
+        delete from comment
+        where bno = #{bno}
+    </delete>
+
+    <!-- select count, 조건 bno-->
+    <select id="count" parameterType="int" resultType="int">
+        select count(*) from comment
+        where bno = #{bno}
+    </select>
+
+    <!-- delete 조건 cno, commenter -->
+    <delete id="delete" parameterType="map">
+        delete from comment
+        where cno = #{cno} and commenter = #{commenter}
+    </delete>
+
+    <!-- insert, parameter CommentDto -->
+    <insert id="insert" parameterType="CommentDto">
+        insert into comment(bno, pcno, comment, commenter, reg_date, up_date)
+            values(#{bno}, #{pcno}, #{comment}, #{commenter}, now(), now())
+    </insert>
+
+    <!-- selectAll, 조건 bno, 정렬 등록일 오름차순, cno 오름차순 -->
+    <select id="selectAll" parameterType="int" resultType="CommentDto">
+        select cno, bno, ifnull(pcno, cno) as pcno, comment, commenter, reg_date, up_date
+        from comment
+        where bno = #{bno}
+        order by pcno asc, cno asc
+    </select>
+
+    <!-- select 조건 cno -->
+    <select id="select" parameterType="int" resultType="CommentDto">
+        select cno, bno, pcno, comment, commenter, reg_date, up_date
+        from comment
+        where cno = #{cno}
+    </select>
+
+    <!-- update set comment, up_date, 조건 cno, commenter-->
+    <update id="update" parameterType="CommentDto">
+        update comment
+        set comment = #{comment} , up_date = now()
+        where cno = #{cno} and commenter = #{commenter}
+    </update>
+
+    <!-- 댓글 페이징 처리 -->
+    <select id="ReplyPage" parameterType="map" resultType="CommentDto">
+        select cno, bno, ifnull(pcno, cno) as pcno, comment, commenter, reg_date, up_date
+        from comment
+        where bno = #{bno}
+        order by pcno asc, cno asc
+        LIMIT #{offset}, #{pageSize}
+    </select>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.ch4.dao.RegistMapper">
+    <!-- 회원가입 시 회원정보 저장 -->
+    <insert id="insert" parameterType="User">
+        insert into user_info (id, pwd, name, email, birth, sns, reg_date)
+        values (#{id}, #{pwd}, #{name}, #{email}, #{birth}, #{sns}, now());
+    </insert>
+
+    <select id="select" resultType="User">
+        select id, pwd, name, email, birth, sns, reg_date
+        from user_info
+        where id = #{id}
+    </select>
+</mapper>
