@@ -1,5 +1,7 @@
 ### Spring_study
 
+spring을 이용한 게시판 만들기 project
+
 mybatis 설정
 
 root-context.xml DB설정
